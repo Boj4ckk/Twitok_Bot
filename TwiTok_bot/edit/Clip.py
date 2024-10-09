@@ -1,55 +1,36 @@
-
-
 class Clip:
-    def __init__(self, id, title, duration, category, streamDate ,url ,views=0):
+    def __init__(self, id, title, duration, category, streamDate, url, views=0):
         """
-        Initialise un clip vidéo.=
-        :param id: l'identifiant du clip.
-        :param title: Le titre du clip.
-        :param duration: La durée du clip en secondes.
-        :param views: Le nombre de vues du clip (par défaut 0).
-        :param category: La catégorie du clip (gaming just chating etc..)
-        :param StreamDate: La date du clip twitch
-        :param url: L'URL du clip.
+        Initializes a video clip with details such as ID, title, duration, and more.
 
+        :param id: The unique identifier for the clip.
+        :param title: The title of the clip.
+        :param duration: The duration of the clip in seconds.
+        :param category: The category of the clip (e.g., gaming, just chatting).
+        :param streamDate: The date the clip was streamed on Twitch.
+        :param url: The URL of the clip.
+        :param views: The number of views the clip has (default is 0).
         """
-        self.id = id 
-        self.title = title
-        self.duration = duration
-        self.views = views
-        self.category = category
-        self.streamDate = streamDate
-        self.url = url
-    
+        self.id = id  # Unique identifier for the clip
+        self.title = title  # Title of the clip
+        self.duration = duration  # Duration of the clip in seconds
+        self.views = views  # Number of views the clip has
+        self.category = category  # Category of the clip (e.g., gaming, just chatting)
+        self.streamDate = streamDate  # Date the clip was streamed on Twitch
+        self.url = url  # URL of the clip
 
     def getClipInfo(self):
         """
-        Retourne un résumé des informations du clip.
-        
-        :return: Un dictionnaire contenant les informations du clip.
+        Returns a summary of the clip's information.
+
+        :return: A dictionary containing the clip's ID, title, duration, views, category, stream date, and URL.
         """
         return {
-            "id" : self.id,
+            "id": self.id,
             "title": self.title,
             "duration": self.duration,
-            "views" : self.views,
-            "category" : self.category,
-            "streamDate" : self.streamDate,
-            "url":  self.url,
-            
-            
+            "views": self.views,
+            "category": self.category,
+            "streamDate": self.streamDate,
+            "url": self.url,
         }
-    
-
-        
-        
-
-
-       
-        
-        
-        
-
-
-
-
