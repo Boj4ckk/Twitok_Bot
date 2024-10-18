@@ -1,4 +1,4 @@
-from moviepy.editor import VideoFileClip, CompositeVideoClip, ImageClip
+from moviepy.editor import VideoFileClip, CompositeVideoClip, ColorClip
 from PIL import Image, ImageFilter
 import logging
 import numpy as np
@@ -113,26 +113,51 @@ class VideoProcessor:
             webcamClip = video.crop(x1=x-45, y1=y-(0.25*h), x2=x+(3*w), y2=y+(h*1.25))
             logging.info(f"Face region cropped: x={x}, y={y}, w={w}, h={h}")
 
+            logging.info(f"Webcam Video size: {webcamClip.size}")
+
             # Crop and resize the video to portrait format
-            croppedVideo = VideoProcessor.cropVideoToPortrait(video, targetWidth, targetHeight)
+           # croppedVideo = VideoProcessor.cropVideoToPortrait(video, targetWidth, targetHeight)
 
             # Apply blur effect to the background
-            blurredBackground = croppedVideo.fl_image(lambda image: VideoProcessor.blurImage(image, blurRadius=30))
+            #blurredBackground = croppedVideo.fl_image(lambda image: VideoProcessor.blurImage(image, blurRadius=30))
 
             # Resize the webcam to occupy 25% of the screen height
-            webcamHeight = int(targetHeight * 0.25)
-            overlayedWebcam = webcamClip.resize(height=webcamHeight).set_position(("center", "top"))
+            # webcamHeight = int(targetHeight * 0.25)
+            overlayedWebcam = webcamClip.resize((480, 270)).set_position(("center", "top"))
+            
+            logging.info(f"overlayed WEB Video size: {overlayedWebcam.size}")
+
+            overlayedWebcam = VideoProcessor.cropVideoToPortrait(overlayedWebcam, 720, 320)
+
+            logging.info(f"Cropped WEB Video size: {overlayedWebcam.size}")
 
             # Resize the main video for overlay
-            overlayedVideoHeight = int(croppedVideo.size[1] * 0.75)
-            overlayedVideo = croppedVideo.resize((targetWidth, overlayedVideoHeight)).set_position("bottom")
+            # overlayedVideoHeight = int(croppedVideo.size[1] * 0.75)
+            overlayedVideo = video.resize((1440, 810)).set_position("bottom")
+
+            logging.info(f"Resize overlayed Video size: {overlayedVideo.size}")
+
+            overlayedVideo = VideoProcessor.cropVideoToPortrait(overlayedVideo, 720, 960)
+
+            logging.info(f"Crop overlayed Video size: {overlayedVideo.size}")
 
             # Combine the blurred background, main video, and webcam
-            finalVideo = CompositeVideoClip([blurredBackground, overlayedVideo, overlayedWebcam])
+            #finalVideo = CompositeVideoClip([blurredBackground, overlayedVideo, overlayedWebcam])
+
+            # Create a background clip
+            background_color = (255, 255, 255)  # White background, change as needed
+            background = ColorClip(size=(targetWidth, targetHeight), color=background_color, duration=video.duration)
+
+            logging.info(f"BACK Video size: {background.size}")
+
+            finalVideo = CompositeVideoClip([background, overlayedVideo, overlayedWebcam])
+
+            logging.info(f"fINAL Video size: {finalVideo.size}")
 
             # Export the final result
             logging.info(f"Exporting final video to: {outputPath}")
             finalVideo.write_videofile(outputPath, codec="libx264", fps=24)
+
 
             logging.info("Video processing with blur and overlay completed successfully.")
 
