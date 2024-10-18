@@ -4,7 +4,6 @@ from edit.clip import Clip  # Import the Clip class to create video clip instanc
 from edit.transition_manager import TransitionManager  # Import the TransitionManager class for handling transitions between clips
 from edit.video_processor import VideoProcessor  # Import the VideoProcessor class for processing video clips
 import logging  # Import logging to capture processing information
-import webbrowser
 
 # Configure logging to capture the processing information
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
