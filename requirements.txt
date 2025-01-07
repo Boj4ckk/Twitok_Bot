@@ -1,0 +1,7 @@
+flask
+requests
+moviepy
+selenium
+opencv-python
+pillow
+streamlink
