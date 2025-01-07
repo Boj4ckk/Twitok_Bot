@@ -1,6 +1,7 @@
 import os
-from flask import Flask, jsonify, render_template, request, redirect, url_for, flash,  send_file, make_response
+from flask import Flask, jsonify, render_template, request, redirect, session, url_for, flash,  send_file, make_response
 import json
+import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 # from test_twitch.test_twitch import get_access_token, get_clips, download_clip_with_audio
 import requests
@@ -17,7 +18,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Remplacez par une clé secrète
 
 # Le chemin vers le fichier JSON pour stocker les utilisateurs
-USER_DATA_FILE = 'metadata/users.json'
+USER_DATA_FILE = "Twitok_Bot\\src\\metadata\\users.json"
 
 # Fonction pour charger les utilisateurs depuis le fichier JSON
 def load_users():
@@ -96,6 +97,21 @@ def add_user(email, password, tiktok_username, twitch_username):
 def home():
     videos_downloaded = []
     error = None
+    
+    
+    if not session.get('logged_in'):
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login'))
+    
+    email = session['email']
+    with open("Twitok_Bot\\src\\metadata\\users.json", 'r') as f:
+        data = json.load(f)
+        for e in data:
+            print(data[e]["email"] , email)
+            if data[e]["email"] == email:
+                session["twitch_username"] = data[e]["twitch_username"]
+    
+    
 
     if request.method == 'POST':
         client_id = os.getenv("CLIENT_ID")
@@ -119,6 +135,7 @@ def home():
                     if (min_views is None or clip['view_count'] >= min_views) and
                        (max_views is None or clip['view_count'] <= max_views)
                 ]
+           
 
             # Télécharger les clips
             for clip in clips:
@@ -129,7 +146,7 @@ def home():
         except Exception as e:
             error = str(e)  # En cas d'erreur, stockez le message
 
-    return render_template('home.html', title="Home", videos=videos_downloaded, error=error)
+    return render_template('home.html', title="Home" ,username=session['twitch_username'], videos=videos_downloaded, error=error)
 
 @app.route('/restart', methods=['POST'])
 def restart_server():
@@ -157,13 +174,15 @@ def login():
             if user["email"] == email:
                 # Vérifier le mot de passe
                 if check_password_hash(user["password"], password):
+                    session['logged_in'] = True
+                    session['email'] = email
                     flash('Login successful!', 'success')
                     return redirect(url_for('home'))
                 else:
                     flash('Invalid password.', 'error')
                     return redirect(url_for('login'))
 
-        flash('Email not found.', 'error')
+        flash('email not found.', 'error')
         return redirect(url_for('login'))
 
     return render_template('login.html', title="Home")
@@ -230,6 +249,7 @@ def download_video():
         #     return send_file(file_name, as_attachment=True, download_name=f"{clip['id']}.mp4")
         # else:
         #     return f"Erreur : Le fichier du clip {video_id} n'a pas pu être téléchargé.", 500
+        
 
     except Exception as e:
         return f"Erreur lors du téléchargement du clip : {str(e)}", 500
