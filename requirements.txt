@@ -2,6 +2,9 @@ flask
 requests
 moviepy
 selenium
+webdriver-manager
 opencv-python
 pillow
 streamlink
+werkzeug
+numpy

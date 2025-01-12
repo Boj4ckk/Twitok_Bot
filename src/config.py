@@ -1,15 +1,15 @@
 # src/config.py
 
 # Twitch API credentials
-TWITCH_CLIENT_ID = "zae28miqv3hp5q2556epbqak7gzdxt"  # Replace with your Twitch API Client ID
-TWITCH_CLIENT_SECRET = "5ysav0r608lcmti1fggc4la5ui7ghq"
+TWITCH_CLIENT_ID = ""  # Replace with your Twitch API Client ID
+TWITCH_CLIENT_SECRET = "" # Replace with your Twitch API Client Secret
 TWITCH_ACCESS_TOKEN = ""  # Replace with a valid OAuth token
 
 # TikTok automation setup
 TIKTOK_DRIVER_PATH = "./drivers/chromedriver"  # Path to ChromeDriver for Selenium
 TIKTOK_COOKIES_PATH = "./src/tiktok_cookies.pkl"  # Path to saved TikTok cookies
-TIKTOK_USERNAME = "twitok_bot"
-TIKTOK_PASSWORD = "utT5K5~gDi$29rK"
+TIKTOK_USERNAME = "" # Replace with your TikTok Username
+TIKTOK_PASSWORD = "" # Replace with your TikTok Password
 
 # File paths for clip management
 METADATA_FILE = "./src/metadata/clips_metadata.json"  # File to store Twitch video metadata

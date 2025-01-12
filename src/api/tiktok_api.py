@@ -9,7 +9,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import logging
 import time
 import pickle
-import os
 
 class TiktokApi:
     """
