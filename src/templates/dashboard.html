@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<form method="POST">
+    <label for="username">Twitch Username:</label>
+    <input type="text" id="username" name="username" placeholder="{{ session['twitch_username'] }}" value="{{ session['twitch_username'] }}">
+    
+    <label for="min_views">Minimum Views:</label>
+    <input type="number" id="min_views" name="min_views" min="0">
+    
+    <label for="max_views">Maximum Views:</label>
+    <input type="number" id="max_views" name="max_views" min="0">
+    
+    <button type="submit">Fetch Clips</button>
+</form>
+
+{% if videos %}
+    <h2>Fetched Videos</h2>
+    <ul>
+        {% for video in videos %}
+            <li>
+                <strong>{{ video }}</strong>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h2>Upload Video to TikTok</h2>
+<p>Select a video to upload to TikTok.</p>
+<form method="POST" action="/upload_to_tiktok" enctype="multipart/form-data">
+    <label for="video_file">Video File:</label>
+    <input type="file" id="video_file" name="video_file" required>
+    
+    <label for="caption">Caption:</label>
+    <textarea id="caption" name="caption"></textarea>
+    
+    <button type="submit">Upload to TikTok</button>
+</form>
+{% endblock %}
